@@ -1,17 +1,62 @@
-# W_UP_01
-write up assignment 01 - update between semesters
-Push-ups by Football Players at Georgetown College
-Description
-Two football players at GC asked their team-mates to do as many push-ups as they could in two minutes.
+---
+title: "Pushups Study — Final Write-Up"
+author: "Your Name"
+output: html_document
+---
 
-Format
-A data frame with 30 observations on the following 3 variables.
+```{r}
+library(tidyverse)
+library(tigerstats)
 
-weight
-weight of subject in pounds.
+push <- read.csv("pushups.csv")
+head(push)
+```
 
-pushups
-number of push-ups completed.
+# 1. Introduction
 
-position
-a factor with levels LINE SKILL: type of position played by the subject. Line positions require high body mass, skill positions require a lot of running around.
+The goal of this study is to determine whether line players and skill players differ in the average number of pushups they can complete.
+
+**H₀:** μ_line = μ_skill  
+**Hₐ:** μ_line ≠ μ_skill  
+
+# 2. Data Description
+
+The dataset contains two variables:  
+- *position* (line or skill)  
+- *pushups* (number performed)
+
+There are 30 total observations.
+
+# 2.1 Graphical Summary
+
+```{r}
+boxplot(push$pushups ~ push$position,
+        col = c("lightblue","lightgreen"),
+        xlab = "Player Type",
+        ylab = "Number of Pushups",
+        main = "Pushups by Player Type")
+```
+
+# 2.2 Numerical Summary
+
+```{r}
+push %>% group_by(position) %>%
+  summarise(
+    min = min(pushups),
+    max = max(pushups),
+    mean = mean(pushups),
+    sd = sd(pushups)
+  )
+```
+
+# 3. Statistical Test — Two-Sample t-test
+
+```{r}
+t.test(pushups ~ position, data = push)
+```
+
+# 4. Results and Conclusions
+
+The t-test shows a **very small p-value**, indicating strong evidence that the two means differ. Skill players complete more pushups on average than line players.
+
+We therefore **reject H₀** and conclude that skill players perform significantly more pushups than line players.
