@@ -1,6 +1,6 @@
 ---
 title: "Pushups Study — Final Write-Up"
-author: "Your Name"
+author: Giovanni Asencio
 output: html_document
 ---
 
